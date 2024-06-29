@@ -70,12 +70,18 @@ const Header: React.FC = () => {
       land
     ) {
       setDisplay(true);
+
+      setGlow(true);
+      setTimeout(() => {
+        setGlow(false);
+      }, 3000);
+
       setTimeout(() => {
         if (sliderRef.current) {
           sliderRef.current.slickNext();
         }
       }, 1000);
-      
+
       setTimeout(() => {
         setDisplay(false);
       }, 2000);
@@ -83,10 +89,96 @@ const Header: React.FC = () => {
   }, [myIndex]);
 
   useEffect(() => {
-    setTimeout(() => {  
+    setTimeout(() => {
       setland(true);
     }, 3000);
   }, []);
+
+  // useEffect(() => {
+  //   if (mockData && mockData.length > 0) {
+  //     const curr = mockData.filter((s) => s.percentage == 100).length;
+  //     console.log("curr , OUT", curr, myIndex);
+  //     // setAchievements(mockData.filter((s) => s.percentage != 100));
+  //     setMyIndex(curr);
+  //     // if (curr == 0) {
+  //     //   console.log("curr zero");
+  //     //   setAchievements(mockData);
+  //     // } else {
+  //     //   if (achievements.length == 0) {
+  //     //     console.log("in length");
+
+  //     //     setAchievements(mockData.filter((s) => s.percentage != 100));
+  //     //   } else {
+  //     //     // setAchievements(mockData);
+  //     //     if (curr > myIndex) {
+  //     //       if (sliderRef.current) {
+  //     //         sliderRef.current.slickNext();
+  //     //       }
+  //     //       setTimeout(() => {
+  //     //         setAchievements(mockData.filter((s) => s.percentage != 100));
+  //     //       }, 500);
+  //     //     }
+  //     //   }
+  //     // }
+  //   }
+  // }, [mockData]);
+
+  // useEffect(() => {
+  //   if (mockData && mockData.length > 0) {
+  //     setMyIndex
+  //   }
+  // }, [mockData])
+
+  // useEffect(() => {
+  //   console.log(
+  //     "first",
+  //     achievements.filter((s) => s.percentage != 100).length,
+  //     mockData.filter((s) => s.percentage != 100).length
+  //   );
+  //   if (
+  //     achievements.filter((s) => s.percentage != 100).length > 0 &&
+  //     achievements.filter((s) => s.percentage != 100).length !=
+  //       mockData.filter((s) => s.percentage != 100).length
+  //   ) {
+  //     console.log("hello");
+
+  //     setAchievements(mockData);
+  //     if (sliderRef.current) {
+  //       sliderRef.current.slickNext();
+  //     }
+  //     setTimeout(() => {
+  //       setAchievements(mockData);
+  //     }, 3000);
+  //   } else {
+  //     if (achievements.length == 0) {
+  //       setAchievements(mockData.filter((s) => s.percentage != 100));
+  //     }
+  //   }
+  // }, [mockData]);
+
+  // const incrementPercentage = () => {
+  //   if (currentIndex != null) {
+  //     console.log("achievements[currentIndex]", currentIndex,achievements.length);
+  //     if (
+  //       currentIndex < achievements.length - 1 &&
+  //       achievements[currentIndex-1] &&
+  //       achievements[currentIndex-1].percentage == 100
+  //     ) {
+  // if (sliderRef.current) {
+  //   sliderRef.current.slickNext();
+  // }
+  // setGlow(true);
+  // setTimeout(() => {
+  //   setGlow(false);
+  // }, 3000);
+  //     }
+  //   }
+  // };
+  // useEffect(() => {
+  //   if (currentIndex != null) {
+  //     incrementPercentage();
+  //   }
+  // }, [currentIndex]);
 
   const settings = {
     dots: false,
