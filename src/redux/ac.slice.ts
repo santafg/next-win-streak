@@ -13,7 +13,7 @@ interface AchievementsState {
 
 const initialState: AchievementsState = {
   achievements: [
-    { title: "First Trade", percentage: 100, name: "A" },
+    { title: "First Trade", percentage: 0, name: "A" },
     { title: "Every 5 bets", percentage: 0, name: "B" },
     { title: "5x streak", percentage: 0, name: "C" },
     { title: "5x wins", percentage: 0, name: "D" },

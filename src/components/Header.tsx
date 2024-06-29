@@ -26,6 +26,9 @@ export const routes: Route[] = [
 
 const Header: React.FC = () => {
   const [achievements, setAchievements] = useState<Achievement[]>([]);
+  const [pendingachievements, setPendingAchievements] = useState<Achievement[]>(
+    []
+  );
   const sliderRef = useRef<Slider>(null);
   const [currentIndex, setCurrentIndex] = useState<null | number>(0);
   const [glow, setGlow] = useState(false);
@@ -35,95 +38,55 @@ const Header: React.FC = () => {
   );
 
   // console.log("currentIndex", currentIndex);
-  const [myIndex, setMyIndex] = useState(0);
+  const [myIndex, setMyIndex] = useState<null | number>(null);
 
   const [trigger, setTrigger] = useState(false);
 
-  // useEffect(() => {
-  //   if (mockData && mockData.length > 0) {
-  //     const curr = mockData.filter((s) => s.percentage == 100).length;
-  //     console.log("curr , OUT", curr, myIndex);
-  //     // setAchievements(mockData.filter((s) => s.percentage != 100));
-  //     setMyIndex(curr);
-  //     // if (curr == 0) {
-  //     //   console.log("curr zero");
-  //     //   setAchievements(mockData);
-  //     // } else {
-  //     //   if (achievements.length == 0) {
-  //     //     console.log("in length");
+  // console.log("achievements", achievements);
 
-  //     //     setAchievements(mockData.filter((s) => s.percentage != 100));
-  //     //   } else {
-  //     //     // setAchievements(mockData);
-  //     //     if (curr > myIndex) {
-  //     //       if (sliderRef.current) {
-  //     //         sliderRef.current.slickNext();
-  //     //       }
-  //     //       setTimeout(() => {
-  //     //         setAchievements(mockData.filter((s) => s.percentage != 100));
-  //     //       }, 500);
-  //     //     }
-  //     //   }
-  //     // }
-  //   }
-  // }, [mockData]);
+  // console.log("myIndex", myIndex);
 
-  // useEffect(() => {
-  //   if (mockData && mockData.length > 0) {
-  //     setMyIndex
-  //   }
-  // }, [mockData])
+  const [display, setDisplay] = useState(false);
+
+  const [land, setland] = useState(false);
 
   useEffect(() => {
-    console.log(
-      "first",
-      achievements.filter((s) => s.percentage != 100).length,
-      mockData.filter((s) => s.percentage != 100).length
-    );
-    if (
-      achievements.filter((s) => s.percentage != 100).length > 0 &&
-      achievements.filter((s) => s.percentage != 100).length !=
-        mockData.filter((s) => s.percentage != 100).length
-    ) {
-      console.log("hello");
-
+    if (mockData && mockData.length > 0) {
       setAchievements(mockData);
-      if (sliderRef.current) {
-        sliderRef.current.slickNext();
-      }
-      setTimeout(() => {
-        setAchievements(mockData);
-      }, 3000);
-    } else {
-      if (achievements.length == 0) {
-        setAchievements(mockData.filter((s) => s.percentage != 100));
-      }
+      setPendingAchievements(mockData.filter((s) => s.percentage != 100));
+
+      // const curr = mockData.filter((s) => s.percentage != 100).length;
+      // if (curr != myIndex && achievements.length > 0) {
+      setMyIndex(mockData.filter((s) => s.percentage == 100).length);
+      // }
     }
   }, [mockData]);
 
-  // const incrementPercentage = () => {
-  //   if (currentIndex != null) {
-  //     console.log("achievements[currentIndex]", currentIndex,achievements.length);
-  //     if (
-  //       currentIndex < achievements.length - 1 &&
-  //       achievements[currentIndex-1] &&
-  //       achievements[currentIndex-1].percentage == 100
-  //     ) {
-  // if (sliderRef.current) {
-  //   sliderRef.current.slickNext();
-  // }
-  // setGlow(true);
-  // setTimeout(() => {
-  //   setGlow(false);
-  // }, 3000);
-  //     }
-  //   }
-  // };
-  // useEffect(() => {
-  //   if (currentIndex != null) {
-  //     incrementPercentage();
-  //   }
-  // }, [currentIndex]);
+  useEffect(() => {
+    if (
+      myIndex &&
+      myIndex > 0 &&
+      myIndex == mockData.filter((s) => s.percentage == 100).length &&
+      land
+    ) {
+      setDisplay(true);
+      setTimeout(() => {
+        if (sliderRef.current) {
+          sliderRef.current.slickNext();
+        }
+      }, 1000);
+      
+      setTimeout(() => {
+        setDisplay(false);
+      }, 2000);
+    }
+  }, [myIndex]);
+
+  useEffect(() => {
+    setTimeout(() => {  
+      setland(true);
+    }, 3000);
+  }, []);
 
   const settings = {
     dots: false,
@@ -169,15 +132,36 @@ const Header: React.FC = () => {
           ))}
         </ul>
       </div>
+      <div className="relative">
+        {display && myIndex && myIndex > 0 && (
+          <div
+            className={`border-4 absolute top-0 right-0 z-20 bg-white ${
+              glow ? "border-yellow-500" : ""
+            }`}
+            style={{ width: "120px" }}
+          >
+            <Slider initialSlide={myIndex - 1} ref={sliderRef} {...settings}>
+              {achievements.length > 0 &&
+                achievements.map((achievement, index) => (
+                  <Achievement
+                    key={index}
+                    title={achievement.name}
+                    percentage={achievement.percentage}
+                  />
+                ))}
+            </Slider>
+          </div>
+        )}
 
-      <div
-        className={`border-4 ${glow ? "border-yellow-500" : ""}`}
-        style={{ width: "120px" }}
-      >
-        {currentIndex != null ? (
-          <Slider initialSlide={currentIndex} ref={sliderRef} {...settings}>
-            {achievements.length > 0 &&
-              achievements.map((achievement, index) => (
+        <div
+          className={`border-4 absolute top-0 right-0 ${
+            glow ? "border-yellow-500" : ""
+          }`}
+          style={{ width: "120px" }}
+        >
+          <Slider {...settings}>
+            {pendingachievements.length > 0 &&
+              pendingachievements.map((achievement, index) => (
                 <Achievement
                   key={index}
                   title={achievement.name}
@@ -185,9 +169,7 @@ const Header: React.FC = () => {
                 />
               ))}
           </Slider>
-        ) : (
-          <h2>Loading..</h2>
-        )}
+        </div>
       </div>
     </div>
   );
