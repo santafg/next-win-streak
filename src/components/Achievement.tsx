@@ -5,7 +5,7 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
 interface AchievementProps {
-  title: any;
+  title: string;
   percentage: number;
 }
 
@@ -15,7 +15,7 @@ const Achievement: React.FC<AchievementProps> = ({ title, percentage }) => {
       <div className="w-8 h-8">
         <CircularProgressbar
           value={percentage}
-          text={title + 1}
+          text={title}
           styles={buildStyles({
             textSize: "24px",
             pathColor: `#3b82f6`,

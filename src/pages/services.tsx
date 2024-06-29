@@ -1,10 +1,10 @@
 import Wrapper from "@/components/Wrapper";
 
-export default function Home() {
+export default function Services() {
   return (
     <div>
       <Wrapper>
-        <h1>Home</h1>
+        <h1>Services</h1>
       </Wrapper>
     </div>
   );
